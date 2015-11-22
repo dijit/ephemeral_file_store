@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """"
@@ -6,7 +6,7 @@ Author:  Jan Harasym <jharasym@linux.com>
 Website: dijit.sh
 
 Creation Date: 2015-10-22
-Last Modified: Sun 22 Nov 23:39:24 2015
+Last Modified: Sun 22 Nov 23:47:06 2015
 
 Description:
 Expected Use:
@@ -16,7 +16,6 @@ from flask import Flask, request, redirect, url_for, render_template, make_respo
 import json
 import glob
 import redis
-from uuid import uuid4
 from hashlib import sha256
 import os
 
@@ -27,6 +26,7 @@ def redis_set(hash,image):
     try:
         db = redis.Redis()
         db.setex(hash,image,1000)
+        # FIXME: Hardcoded mime-type should be derived, not static.
         db.setex(hash + '_mime','image/jpeg',1000)
         return(hash)
     except:
@@ -61,6 +61,7 @@ def upload():
         redis_set(filename,filedata)
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
+        # FIXME: I don't have any idea how to do this.
         return redirect("http://127.0.0.1:5000/files/" + str(filename))
 #        return redirect(url_for('uploaded_file',
 #                                filename=filename))
