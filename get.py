@@ -51,18 +51,13 @@ def upload():
     print(request)
     print(filedata)
     print(sha256sum(filedata))
-    # Check if the file is one of the allowed types/extensions
     if file:
-        # Make the filename safe, remove unsupported chars
         filename = sha256sum(filedata)
-        # Move the file form the temporal folder to
-        # the upload folder we setup
-        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         redis_set(filename,filedata)
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
         # FIXME: I don't have any idea how to do this.
-        return redirect("http://127.0.0.1:5000/files/" + str(filename))
+        return redirect("/files/" + str(filename))
 #        return redirect(url_for('uploaded_file',
 #                                filename=filename))
 
@@ -76,11 +71,6 @@ def redis_get(hash):
     response.headers['Content-Type'] = mimetype
     #response.headers['Content-Disposition'] = 'attachment; filename=img.jpg'
     return(response)
-    #return render_template("files.html",
-    #    uuid=hash,
-    #    files=image,
-    #)
-
 
 def ajax_response(status, msg):
     status_code = "ok" if status else "error"
