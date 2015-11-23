@@ -57,9 +57,9 @@ def upload():
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
         # FIXME: I don't have any idea how to do this.
-        return redirect("/files/" + str(filename))
-#        return redirect(url_for('uploaded_file',
-#                                filename=filename))
+#        return redirect("/files/" + str(filename))
+        return redirect(url_for('redis_get',
+                                hash=filename))
 
 @app.route("/files/<hash>")
 def redis_get(hash):
